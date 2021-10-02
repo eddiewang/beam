@@ -78,6 +78,7 @@ import org.apache.beam.vendor.guava.v26_0_jre.com.google.common.base.CaseFormat;
 import org.apache.beam.vendor.guava.v26_0_jre.com.google.common.base.Converter;
 import org.apache.beam.vendor.guava.v26_0_jre.com.google.common.base.Preconditions;
 import org.apache.beam.vendor.guava.v26_0_jre.com.google.common.base.Throwables;
+import org.apache.beam.vendor.guava.v26_0_jre.com.google.common.collect.ImmutableList;
 import org.apache.beam.vendor.guava.v26_0_jre.com.google.common.collect.ImmutableMap;
 import org.apache.beam.vendor.guava.v26_0_jre.com.google.common.collect.Iterables;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -442,6 +443,11 @@ public class ExpansionService extends ExpansionServiceGrpc.ExpansionServiceImplB
     }
     LOG.debug("Staging to files from the classpath: {}", classpathResources.size());
     pipeline.getOptions().as(PortablePipelineOptions.class).setFilesToStage(classpathResources);
+
+    String extService = System.getenv().getOrDefault("BEAM_EXPANSION_SERVICE", "beam-expansion-service:8096");
+    String extServiceURL = String.format("%s%s", "external_service_address=", extService);
+    pipeline.getOptions().as(PortablePipelineOptions.class).setDefaultEnvironmentType(Environments.ENVIRONMENT_EXTERNAL);
+    pipeline.getOptions().as(PortablePipelineOptions.class).setEnvironmentOptions(ImmutableList.of(extServiceURL));
 
     RehydratedComponents rehydratedComponents =
         RehydratedComponents.forComponents(request.getComponents()).withPipeline(pipeline);
