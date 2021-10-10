@@ -444,10 +444,11 @@ public class ExpansionService extends ExpansionServiceGrpc.ExpansionServiceImplB
     LOG.debug("Staging to files from the classpath: {}", classpathResources.size());
     pipeline.getOptions().as(PortablePipelineOptions.class).setFilesToStage(classpathResources);
 
-    String extService = System.getenv().getOrDefault("BEAM_EXPANSION_SERVICE", "beam-expansion-service:8096");
-    String extServiceURL = String.format("%s%s", "external_service_address=", extService);
     pipeline.getOptions().as(PortablePipelineOptions.class).setDefaultEnvironmentType(Environments.ENVIRONMENT_EXTERNAL);
+    String extService = System.getenv().getOrDefault("BEAM_EXPANSION_SERVICE", "localhost:60720");
+    String extServiceURL = String.format("%s%s", "external_service_address=", extService);
     pipeline.getOptions().as(PortablePipelineOptions.class).setEnvironmentOptions(ImmutableList.of(extServiceURL));
+    // pipeline.getOptions().as(PortablePipelineOptions.class).setDefaultEnvironmentType(Environments.ENVIRONMENT_EMBEDDED);
 
     RehydratedComponents rehydratedComponents =
         RehydratedComponents.forComponents(request.getComponents()).withPipeline(pipeline);

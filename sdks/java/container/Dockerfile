@@ -51,4 +51,4 @@ RUN if [ "${pull_licenses}" = "false" ] ; then \
 # Add Google Cloud Profiler agent.
 COPY target/profiler/* /opt/google_cloud_profiler/
 
-ENTRYPOINT ["/opt/apache/beam/boot"]
+ENTRYPOINT ["/opt/apache/java_beam/boot"]

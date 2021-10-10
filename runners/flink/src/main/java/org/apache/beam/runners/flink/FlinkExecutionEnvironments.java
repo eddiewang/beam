@@ -218,6 +218,11 @@ public class FlinkExecutionEnvironments {
     // default to event time
     flinkStreamEnv.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
+    // check if Flink should use unaligned checkpoints.
+    if (options.getUnalignedCheckpointing()) {
+        flinkStreamEnv.getCheckpointConfig().enableUnalignedCheckpoints();
+    }
+
     // for the following 2 parameters, a value of -1 means that Flink will use
     // the default values as specified in the configuration.
     int numRetries = options.getNumberOfExecutionRetries();

@@ -109,3 +109,6 @@ website/www/site/code_samples
 website/www/site/_config_branch_repo.toml
 website/www/yarn-error.log
 !website/www/site/content
+
+# Vim
+.vim

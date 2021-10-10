@@ -55,6 +55,13 @@ public interface FlinkPipelineOptions
   void setFlinkMaster(String value);
 
   @Description(
+      "Enables unaligned checkpointing. Disabled by default.")
+  @Default.Boolean(false)
+  Boolean getUnalignedCheckpointing();
+
+  void setUnalignedCheckpointing(Boolean unalignedCheckpointing);
+
+  @Description(
       "The degree of parallelism to be used when distributing operations onto workers. "
           + "If the parallelism is not set, the configured Flink default is used, or 1 if none can be found.")
   @Default.Integer(-1)
